@@ -33,6 +33,7 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/src
+      - /src/node_modules
     env_file:
       - .env.dev
     command: >
