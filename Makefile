@@ -14,6 +14,12 @@ logs:
 restart:
 	docker compose -f $(COMPOSE_FILE) restart
 
+backend:
+	docker compose -f $(COMPOSE_FILE) up --build server db
+
+frontend:
+	docker compose -f $(COMPOSE_FILE) up --build client
+
 # Database
 db-shell:
 	docker compose -f $(COMPOSE_FILE) exec db psql -U postgres
@@ -32,3 +38,5 @@ help:
 	@echo "  make logs         - Логи"
 	@echo "  make db-shell     - PostgreSQL консоль"
 	@echo "  make db-migrate   - Миграции"
+	@echo "  make backend      - Запуск backend в dev режиме"
+	@echo "  make frontend      - Запуск frontend в dev режиме"
