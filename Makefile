@@ -1,35 +1,35 @@
 # Makefile for managing Docker Compose
-COMPOSE_FILE = docker-compose.dev.yml
+COMPOSE = docker-compose.yml
 
 # Development
 up:
-	docker compose -f $(COMPOSE_FILE) up --build
+	docker compose -f $(COMPOSE) up --build
 
 down:
-	docker compose -f $(COMPOSE_FILE) down
+	docker compose -f $(COMPOSE) down
 
 logs:
-	docker compose -f $(COMPOSE_FILE) logs -f
+	docker compose -f $(COMPOSE) logs -f
 
 restart:
-	docker compose -f $(COMPOSE_FILE) restart
+	docker compose -f $(COMPOSE) restart
 
 backend:
-	docker compose -f $(COMPOSE_FILE) up --build server db
+	docker compose -f $(COMPOSE) up --build server db
 
 frontend:
-	docker compose -f $(COMPOSE_FILE) up --build client
+	docker compose -f $(COMPOSE) up --build client
 
 # Database
 db-shell:
-	docker compose -f $(COMPOSE_FILE) exec db psql -U postgres
+	docker compose -f $(COMPOSE) exec db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
 
 db-migrate:
-	docker compose -f $(COMPOSE_FILE) exec server python manage.py migrate
+	docker compose -f $(COMPOSE) exec server python manage.py migrate
 
 # Clean
 clean:
-	docker compose -f $(COMPOSE_FILE) down -v
+	docker compose -f $(COMPOSE) down -v
 
 help:
 	@echo "Available commands:"
