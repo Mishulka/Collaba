@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import socket
 from pathlib import Path
 
 
@@ -36,6 +37,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "jazzmin",
+    "polls.apps.PollsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,9 +49,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "drf_yasg",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -81,7 +85,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+    "172.17.0.1",
+]
 
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS += [ip[: ip.rfind(".")] + ".1" for ip in ips]
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -136,7 +147,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
