@@ -76,6 +76,28 @@ test:
 test-app:
 	docker compose -f $(COMPOSE) exec $(SERVER_CONTAINER) python manage.py test $(app)
 
+# Frontend Management
+client-bash:
+	docker compose -f $(COMPOSE) exec client sh
+
+client-logs:
+	docker compose -f $(COMPOSE) logs -f client
+
+client-install:
+	docker compose -f $(COMPOSE) exec client npm install
+
+client-audit:
+	docker compose -f $(COMPOSE) exec client npm audit
+
+client-audit-fix:
+	docker compose -f $(COMPOSE) exec client npm audit fix
+
+client-audit-fix-force:
+	docker compose -f $(COMPOSE) exec client npm audit fix --force
+
+client-update-browserslist:
+	docker compose -f $(COMPOSE) exec client npx browserslist@latest --update-db
+
 # Docker Management
 ps:
 	docker compose -f $(COMPOSE) ps
@@ -119,6 +141,7 @@ health:
 	docker compose -f $(COMPOSE) exec $(SERVER_CONTAINER) python manage.py check
 
 # Help
+# Help
 help:
 	@echo "🐳 Docker Compose Commands:"
 	@echo "  make up                 - Запуск проекта"
@@ -126,7 +149,6 @@ help:
 	@echo "  make down               - Остановка"
 	@echo "  make down-clean         - Остановка с удалением volumes"
 	@echo "  make logs               - Логи всех сервисов"
-	@echo "  make logs-server        - Логи только server"
 	@echo "  make restart            - Перезапуск всех сервисов"
 	
 	@echo ""
@@ -135,7 +157,7 @@ help:
 	@echo "  make db-makemigrations  - Создать миграции"
 	@echo "  make db-makemigrations app=<app> - Создать миграции для приложения"
 	@echo "  make db-migrate         - Применить миграции"
-	@echo "  make db-migrate-app app=polls - Мигрировать конкретное приложение"
+	@echo "  make db-migrate-app app=<app> - Мигрировать конкретное приложение"
 	@echo "  make db-showmigrations  - Показать статус миграций"
 	@echo "  make db-reset           - Полный сброс БД"
 	
@@ -145,8 +167,18 @@ help:
 	@echo "  make createsuperuser    - Создать суперпользователя"
 	@echo "  make collectstatic      - Собрать статику"
 	@echo "  make test               - Запустить тесты"
-	@echo "  make test-app app=polls - Тесты конкретного приложения"
+	@echo "  make test-app app=<app> - Тесты конкретного приложения"
 	
+	@echo ""
+	@echo "⚛️ Frontend (Next.js) Management:"
+	@echo "  make client-bash        - Shell в контейнере клиента"
+	@echo "  make client-logs        - Логи клиента"
+	@echo "  make client-install     - Установить зависимости (npm install)"
+	@echo "  make client-audit       - Проверить уязвимости (npm audit)"
+	@echo "  make client-audit-fix   - Починить уязвимости (безопасные)"
+	@echo "  make client-audit-fix-force - Починить всё (даже ломающее)"
+	@echo "  make client-update-browserslist - Обновить базу Browserslist"
+
 	@echo ""
 	@echo "🔧 Development Tools:"
 	@echo "  make server-bash        - Bash в контейнере server"
