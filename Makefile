@@ -181,6 +181,8 @@ help:
 
 	@echo ""
 	@echo "🔧 Development Tools:"
+	@echo "  make backend       	 - Запустить backend и БД"
+	@echo "  make fronted      		 - Запустить только frontend"
 	@echo "  make server-bash        - Bash в контейнере server"
 	@echo "  make requirements       - Обновить requirements.txt"
 	@echo "  make health             - Проверить здоровье системы"
