@@ -53,5 +53,5 @@ export const customTheme = extendTheme(
       Select,
     },
   },
-  withDefaultColorScheme({ colorScheme: "primary" })
+  withDefaultColorScheme({ colorScheme: "primary" }),
 );

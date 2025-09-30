@@ -98,6 +98,23 @@ client-audit-fix-force:
 client-update-browserslist:
 	docker compose -f $(COMPOSE) exec client npx browserslist@latest --update-db
 
+client-lint:
+	docker compose -f $(COMPOSE) exec client npm run lint
+
+client-format:
+	docker compose -f $(COMPOSE) exec client npx prettier --write .
+
+client-format-check:
+	docker compose -f $(COMPOSE) exec client npx prettier --check .
+
+client-type-check:
+	docker compose -f $(COMPOSE) exec client npx tsc --noEmit
+
+client-validate:
+	docker compose -f $(COMPOSE) exec client npm run lint && \
+	docker compose -f $(COMPOSE) exec client npx tsc --noEmit && \
+	docker compose -f $(COMPOSE) exec client npx prettier --check .
+
 # Docker Management
 ps:
 	docker compose -f $(COMPOSE) ps
@@ -139,56 +156,3 @@ health:
 	docker compose -f $(COMPOSE) exec $(SERVER_CONTAINER) python -c "import django; django.setup(); from django.db import connection; cursor = connection.cursor(); cursor.execute('SELECT 1'); print('✅ Database connected')"
 	@echo "--- Django Check ---"
 	docker compose -f $(COMPOSE) exec $(SERVER_CONTAINER) python manage.py check
-
-# Help
-# Help
-help:
-	@echo "🐳 Docker Compose Commands:"
-	@echo "  make up                 - Запуск проекта"
-	@echo "  make up-detached        - Запуск в фоне"
-	@echo "  make down               - Остановка"
-	@echo "  make down-clean         - Остановка с удалением volumes"
-	@echo "  make logs               - Логи всех сервисов"
-	@echo "  make restart            - Перезапуск всех сервисов"
-	
-	@echo ""
-	@echo "🗄️ Database Commands:"
-	@echo "  make db-shell           - PostgreSQL консоль"
-	@echo "  make db-makemigrations  - Создать миграции"
-	@echo "  make db-makemigrations app=<app> - Создать миграции для приложения"
-	@echo "  make db-migrate         - Применить миграции"
-	@echo "  make db-migrate-app app=<app> - Мигрировать конкретное приложение"
-	@echo "  make db-showmigrations  - Показать статус миграций"
-	@echo "  make db-reset           - Полный сброс БД"
-	
-	@echo ""
-	@echo "🐍 Django Management:"
-	@echo "  make shell              - Django shell"
-	@echo "  make createsuperuser    - Создать суперпользователя"
-	@echo "  make collectstatic      - Собрать статику"
-	@echo "  make test               - Запустить тесты"
-	@echo "  make test-app app=<app> - Тесты конкретного приложения"
-	
-	@echo ""
-	@echo "⚛️ Frontend (Next.js) Management:"
-	@echo "  make client-bash        - Shell в контейнере клиента"
-	@echo "  make client-logs        - Логи клиента"
-	@echo "  make client-install     - Установить зависимости (npm install)"
-	@echo "  make client-audit       - Проверить уязвимости (npm audit)"
-	@echo "  make client-audit-fix   - Починить уязвимости (безопасные)"
-	@echo "  make client-audit-fix-force - Починить всё (даже ломающее)"
-	@echo "  make client-update-browserslist - Обновить базу Browserslist"
-
-	@echo ""
-	@echo "🔧 Development Tools:"
-	@echo "  make backend       	 - Запустить backend и БД"
-	@echo "  make fronted      		 - Запустить только frontend"
-	@echo "  make server-bash        - Bash в контейнере server"
-	@echo "  make requirements       - Обновить requirements.txt"
-	@echo "  make health             - Проверить здоровье системы"
-	@echo "  make ps                 - Показать статус контейнеров"
-	
-	@echo ""
-	@echo "🧹 Cleanup:"
-	@echo "  make clean-cache        - Очистить кэш Docker"
-	@echo "  make clean-all          - Полная очистка"

@@ -16,3 +16,19 @@ repos:
     rev: v3.0.0
     hooks:
       - id: prettier
+
+  - repo: local
+    hooks:
+      - id: frontend-lint
+        name: Frontend ESLint
+        entry: docker-compose exec -T client npm run lint
+        language: system
+        files: ^client/.*\.(js|jsx|ts|tsx)$
+        pass_filenames: false
+
+      - id: frontend-types
+        name: Frontend Type Check
+        entry: docker-compose exec -T client npm run type-check
+        language: system
+        files: ^client/.*\.(ts|tsx)$
+        pass_filenames: false
