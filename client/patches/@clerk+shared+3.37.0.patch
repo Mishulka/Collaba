@@ -1,0 +1,21 @@
+diff --git a/node_modules/@clerk/shared/dist/runtime/react/index.mjs b/node_modules/@clerk/shared/dist/runtime/react/index.mjs
+index d98aab4..62f9a94 100644
+--- a/node_modules/@clerk/shared/dist/runtime/react/index.mjs
++++ b/node_modules/@clerk/shared/dist/runtime/react/index.mjs
+@@ -11,11 +11,13 @@ import "../underscore-DjQrhefX.mjs";
+ import { getCurrentOrganizationMembership } from "../organization-COubKXAN.mjs";
+ import { eventMethodCalled } from "../telemetry-wqMDWlvR.mjs";
+ import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+-import useSWR, { SWRConfig, useSWRConfig } from "swr";
+-import useSWRInfinite from "swr/infinite";
++const useSWR = () => ({ data: null, error: null, isLoading: false });
++const SWRConfig = ({ children }) => children;
++const useSWRConfig = () => ({ mutate: async () => {} });
+ import { dequal } from "dequal";
+-import useSWRMutation from "swr/mutation";
+ 
++const useSWRInfinite = () => ({ data: [], error: null });
++const useSWRMutation = () => ({ trigger: async () => {} });
+ //#region src/react/hooks/createContextAndHook.ts
+ /**
+ * Assert that the context value exists, otherwise throw an error.
