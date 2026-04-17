@@ -32,7 +32,7 @@ export const Room = ({
                 penColor: null,
             }}
             initialStorage={() => ({
-                layerIds: new LiveList(),
+                layerIds: new (LiveList as any)(),
                 layers: new LiveMap<string, LiveObject<Layer>>(),
             })}
         >
