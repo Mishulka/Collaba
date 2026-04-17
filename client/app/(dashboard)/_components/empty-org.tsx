@@ -31,7 +31,7 @@ export const EmptyOrg = () => {
                             Create organization
                         </Button>
                     </DialogTrigger>
-                    <DialogContent classname>
+                    <DialogContent>
                         <CreateOrganization />
                     </DialogContent>
                 </Dialog>

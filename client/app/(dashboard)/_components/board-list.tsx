@@ -13,6 +13,7 @@ import { NewBoardButton } from './new-board-button';
 
 interface BoardListProps {
     orgId: string,
+    query: URLSearchParams
 }
 
 export const BoardList = ({
