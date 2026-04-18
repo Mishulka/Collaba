@@ -18,7 +18,7 @@ export const Room = ({
     children,
     roomId,
     fallback,
-    }:RoomProps) => {
+}: RoomProps) => {
     if (!roomId) {
         return <div>Error: No room ID provided</div>;
     }
@@ -31,10 +31,23 @@ export const Room = ({
                 pencilDraft: null,
                 penColor: null,
             }}
-            initialStorage={() => ({
-                layerIds: new (LiveList as any)(),
-                layers: new (LiveMap as any)(),
-            })}
+            initialStorage={() => {
+                console.log('[Room] Creating initial storage...');
+
+                const layerIdsList = new LiveList<string>([]);
+                const layersMap = new LiveMap<string, LiveObject<Layer>>();
+
+                console.log('[Room] LiveList instance:', layerIdsList);
+                console.log('[Room] LiveMap instance:', layersMap);
+
+                const storage = {
+                    layerIds: layerIdsList,
+                    layers: layersMap,
+                };
+
+                console.log('[Room] Returning storage object:', storage);
+                return storage;
+            }}
         >
             <ClientSideSuspense fallback={fallback}>
                 {() => children}
