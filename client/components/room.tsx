@@ -34,6 +34,7 @@ export const Room = ({
             initialStorage={() => {
                 console.log('[Room] Creating initial storage...');
 
+                
                 const layerIdsList = new LiveList<string>([]);
                 const layersMap = new LiveMap<string, LiveObject<Layer>>();
 
