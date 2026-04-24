@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { RoomProvider } from "@/liveblocks.config";
 
 import { ClientSideSuspense } from "@liveblocks/react"
@@ -19,9 +19,20 @@ export const Room = ({
     roomId,
     fallback,
 }: RoomProps) => {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     if (!roomId) {
         return <div>Error: No room ID provided</div>;
     }
+
+    if (!isMounted) {
+        return <>{fallback}</>;
+    }
+
     return (
         <RoomProvider 
             id={roomId} 
@@ -34,7 +45,6 @@ export const Room = ({
             initialStorage={() => {
                 console.log('[Room] Creating initial storage...');
 
-                
                 const layerIdsList = new LiveList<string>([]);
                 const layersMap = new LiveMap<string, LiveObject<Layer>>();
 

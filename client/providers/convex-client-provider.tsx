@@ -8,7 +8,7 @@ import {
     Authenticated,
     ConvexReactClient,
 } from "convex/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Loading } from "@/components/auth/loading";
 
 interface ConvexClientProviderProps {
@@ -21,6 +21,15 @@ const convex = new ConvexReactClient(convexUrl);
 export const ConvexClientProvider = ({
     children,
 }: ConvexClientProviderProps) => {
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        // На сервере не рендерим ничего (или можно вернуть fallback)
+        return null;
+    }
     return  (
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
