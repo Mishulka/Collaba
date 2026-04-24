@@ -7,7 +7,10 @@ const nextConfig = {
             hostname: 'img.clerk.com',
             }
         ]
-    }
+    },
+    logging: {
+    level: 'verbose',
+  },
 };
 
 module.exports = nextConfig;
