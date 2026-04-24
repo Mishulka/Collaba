@@ -30,7 +30,10 @@ export const ConvexClientProvider = ({
     if (!isClient) return null; // На сервере ничего не рендерим
 
     return (
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
+        <ClerkProvider 
+        publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+        clerkJSUrl="/clerk/clerk.browser.js"
+        >
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
                 <Authenticated>
                     {children}
